@@ -25,30 +25,23 @@ class StatisticsComponent extends Component{
 
         $this->Stats = TableRegistry::get('Stats.Stats');
         $this->auth_class = Configure::read('Stats.auth_class')?:'Auth';
-        $this->exclude_prefixes = Configure::read('Stats.exclude_prefixes')?:[];
     }
 
     public function beforeFilter(Event $event){
-
-        $this->controller = $this->_registry->getController();        
         
-        if($this->skipRecord()){
-            return;
-        }
-
+        $this->controller = $this->_registry->getController();
         $this->Auth =$this->controller->Auth;
+        
+        $req = $this->controller->request;
+        
 
         $user = $this->getUser();
-        $entry = $this->Stats->createNewRecord($this->controller->request,$user);
+        $entry = $this->Stats->createNewRecord($req->params,$user);
      
         $this->lastEntry = $this->Stats->save($entry);
     }
     
     public function beforeRender(Event $event){
-        if($this->skipRecord()){
-            return;
-        }
-
         $this->lastEntry->returned = time(); //automaticly converted by orm to datetime
         $this->Stats->save($this->lastEntry);
     }
@@ -59,17 +52,12 @@ class StatisticsComponent extends Component{
      * Auth Class should be configured in bootstrap.php 
      */
     private function getUser(){
-        return $this->controller->{$this->auth_class}->user();
-    }
-
-    /**
-     * Skip record according to request params and bootstrap configuration.
-     * Applied filters
-     * - request->params->prefix => configuration 'exclude_prefixes'
-     */
-    protected function skipRecord(){
-        $params = $this->controller->request->params;
-        $prefix = array_key_exists('prefix',$params)?$params['prefix']:'';
-        return in_array($prefix,$this->exclude_prefixes);
+    	try{
+        	return $this->controller->{$this->auth_class}->user();
+    	}catch(\Exception $e){
+    		return null;
+    	}catch(\Error $e){
+    		return null;
+    	}
     }
 }
