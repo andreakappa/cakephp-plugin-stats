@@ -76,13 +76,15 @@ class StatsTable extends Table
     }
 
 
-    public function createNewRecord($params, $user = null)
+    public function createNewRecord($request, $user = null)
     {
+        $params = $request->params;
         $entry = $this->newEntity();
         $entry->controller = $params['controller'];
         $entry->action = $params['action'];
         $entry->query = implode(";", $params['pass']);
         $entry->prefix = array_key_exists('prefix',$params)?$params['prefix']:'';
+        $entry->ip = $request->clientIp();
         $entry->returned = null;
 
         if ($user) {

@@ -36,11 +36,10 @@ class StatisticsComponent extends Component{
             return;
         }
 
-        $req = $this->controller->request;
         $this->Auth =$this->controller->Auth;
 
         $user = $this->getUser();
-        $entry = $this->Stats->createNewRecord($req->params,$user);
+        $entry = $this->Stats->createNewRecord($this->controller->request,$user);
      
         $this->lastEntry = $this->Stats->save($entry);
     }
