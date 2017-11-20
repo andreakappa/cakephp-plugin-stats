@@ -4,9 +4,7 @@ namespace Stats\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Event\Event;
-use Cake\Log\Log;
 use Cake\Orm\TableRegistry;
-use Stats\Model\Entity\Stat;
 use Cake\Core\Configure;
 
 /**
@@ -30,9 +28,7 @@ class StatisticsComponent extends Component{
     public function beforeFilter(Event $event){
         
         $this->controller = $this->_registry->getController();
-        $this->Auth =$this->controller->Auth;
         
-
         $user = $this->getUser();
         $entry = $this->Stats->createNewRecord($this->controller->request,$user);
      
