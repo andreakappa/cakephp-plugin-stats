@@ -82,6 +82,7 @@ class StatsTable extends Table
         $entry->controller = $params['controller'];
         $entry->action = $params['action'];
         $entry->query = implode(";", $params['pass']);
+        $entry->prefix = array_key_exists('prefix',$params)?$params['prefix']:'';
         $entry->returned = null;
 
         if ($user) {
