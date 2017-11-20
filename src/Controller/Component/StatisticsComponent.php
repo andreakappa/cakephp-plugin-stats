@@ -32,11 +32,9 @@ class StatisticsComponent extends Component{
         $this->controller = $this->_registry->getController();
         $this->Auth =$this->controller->Auth;
         
-        $req = $this->controller->request;
-        
 
         $user = $this->getUser();
-        $entry = $this->Stats->createNewRecord($req->params,$user);
+        $entry = $this->Stats->createNewRecord($this->controller->request,$user);
      
         $this->lastEntry = $this->Stats->save($entry);
     }
