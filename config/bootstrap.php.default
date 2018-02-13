@@ -1,3 +1,4 @@
 <?php
 use Cake\Core\Configure;
 #Configure::write('Stats.auth_class','YourCustomAuthClass');
+#Configure::write('Stats.exclude_prefixes',['prefixname']);

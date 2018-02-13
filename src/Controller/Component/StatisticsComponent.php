@@ -4,9 +4,7 @@ namespace Stats\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Event\Event;
-use Cake\Log\Log;
 use Cake\Orm\TableRegistry;
-use Stats\Model\Entity\Stat;
 use Cake\Core\Configure;
 
 /**
@@ -30,13 +28,9 @@ class StatisticsComponent extends Component{
     public function beforeFilter(Event $event){
         
         $this->controller = $this->_registry->getController();
-        $this->Auth =$this->controller->Auth;
         
-        $req = $this->controller->request;
-        
-
         $user = $this->getUser();
-        $entry = $this->Stats->createNewRecord($req->params,$user);
+        $entry = $this->Stats->createNewRecord($this->controller->request,$user);
      
         $this->lastEntry = $this->Stats->save($entry);
     }
@@ -52,6 +46,12 @@ class StatisticsComponent extends Component{
      * Auth Class should be configured in bootstrap.php 
      */
     private function getUser(){
-        return $this->controller->{$this->auth_class}->user();
+    	try{
+        	return $this->controller->{$this->auth_class}->user();
+    	}catch(\Exception $e){
+    		return null;
+    	}catch(\Error $e){
+    		return null;
+    	}
     }
 }

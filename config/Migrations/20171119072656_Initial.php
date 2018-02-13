@@ -16,6 +16,8 @@ class Initial extends AbstractMigration
             ->addColumn('controller','string',['default'=>null,'null'=>true,'limit'=>100])
             ->addColumn('action','string',['default'=>null,'null'=>true,'limit'=>100])
             ->addColumn('query','string',['default'=>null,'null'=>true,'limit'=>100])
+            ->addColumn('prefix','string',['default'=>null,'null'=>true,'limit'=>100])
+            ->addColumn('ip','string',['default'=>null,'null'=>true,'limit'=>50])
             ->addColumn('user_id','integer',['default'=>null,'null'=>true])
             ->addColumn('created','datetime',['default'=>null,'null'=>true])
             ->addColumn('returned','datetime',['default'=>null,'null'=>true])
