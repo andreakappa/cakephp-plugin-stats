@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Core\Configure;
 
 /**
  * Stats Model
@@ -83,8 +84,16 @@ class StatsTable extends Table
         $entry->controller = $params['controller'];
         $entry->action = $params['action'];
         $entry->query = implode(";", $params['pass']);
+
+	if($params['action']=='login'){
+		$entry->query.=' username:'.$request->data['username'];
+	}
+
         $entry->prefix = array_key_exists('prefix',$params)?$params['prefix']:'';
-        $entry->ip = $request->clientIp();
+
+	$real_ip = $request->env('HTTP_X_REAL_IP');
+	$entry->ip = trim($real_ip)?$real_ip:$request->clientIp();
+
         $entry->returned = null;
 
         if ($user) {
